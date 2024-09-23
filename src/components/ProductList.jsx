@@ -2,7 +2,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {
   deleteProduct,
   toggleAvailability,
-  //   editProduct,
+  editProduct,
 } from '../store/productSlice';
 import {useState} from 'react';
 
@@ -11,17 +11,19 @@ export const ProductList = () => {
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
   const products = useSelector(state => state.products.products);
-  //   let editMode = useSelector(state => state.editMode);
   const [editMode, setEditMode] = useState(false);
   const dispatch = useDispatch();
 
-  function handleEditBtnClick() {
-    setEditMode(true);
-  }
-
-  function handleSaveEditedClick() {
-    // setEditMode(false);
-    // dispatch(editProduct(product));
+  function SaveEdited(product) {
+    dispatch(
+      editProduct({
+        ...product,
+        name: name,
+        description: description,
+        price: price,
+      }),
+    );
+    setEditMode(false);
   }
 
   return (
@@ -56,7 +58,7 @@ export const ProductList = () => {
                   />
                   <input
                     placeholder="Product Price"
-                    onChange={e => setPrice(e.target.price)}
+                    onChange={e => setPrice(e.target.value)}
                     value={price}
                   />
                 </div>
@@ -65,9 +67,9 @@ export const ProductList = () => {
                   <h3>{product.name}</h3>
                   <p>{product.description}</p>
                   <p>Price: ${product.price}</p>
+                  <p>Available: {product.available ? 'Yes' : 'No'}</p>
                 </>
               )}
-              <p>Available: {product.available ? 'Var' : 'Yok'}</p>
               <button
                 type="button"
                 onClick={() => dispatch(deleteProduct(product.id))}
@@ -81,11 +83,11 @@ export const ProductList = () => {
                 Toggle availability
               </button>
               {editMode ? (
-                <button type="button" onClick={handleSaveEditedClick(product)}>
+                <button type="button" onClick={() => SaveEdited({product})}>
                   Save
                 </button>
               ) : (
-                <button type="button" onClick={handleEditBtnClick}>
+                <button type="button" onClick={() => setEditMode(true)}>
                   Edit product
                 </button>
               )}
