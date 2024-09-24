@@ -2,7 +2,8 @@ import {useSelector, useDispatch} from 'react-redux';
 import {
   deleteProduct,
   toggleAvailability,
-  editProduct,
+  // editProduct,
+  updateProduct,
 } from '../store/productSlice';
 import {useState} from 'react';
 
@@ -14,15 +15,16 @@ export const ProductList = () => {
   const [editMode, setEditMode] = useState(false);
   const dispatch = useDispatch();
 
-  function SaveEdited(product) {
+  function saveEdited(product) {
     dispatch(
-      editProduct({
+      updateProduct({
         ...product,
         name: name,
         description: description,
         price: price,
       }),
     );
+    console.log(product);
     setEditMode(false);
   }
 
@@ -83,7 +85,7 @@ export const ProductList = () => {
                 Toggle availability
               </button>
               {editMode ? (
-                <button type="button" onClick={() => SaveEdited({product})}>
+                <button type="button" onClick={() => saveEdited(product)}>
                   Save
                 </button>
               ) : (

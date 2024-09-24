@@ -34,17 +34,17 @@ const productSlice = createSlice({
       }
     },
     editProduct: (state, action) => {
-      state.products.map(product => {
+      state.products = state.products.map(product => {
         if (product.id === action.payload.id) {
-          return {
-            ...product,
-            name: action.payload.name,
-            description: action.payload.description,
-            price: action.payload.price,
-          };
+          return action.payload;
+          // ...product,
+          // name: action.payload.name,
+          // description: action.payload.description,
+          // price: action.payload.price,
         }
         return product;
       });
+      console.log(state.products);
     },
   },
 });
